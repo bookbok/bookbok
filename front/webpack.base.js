@@ -9,7 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, '../public/bundle'),
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[id]-[chunkhash].js',
-    publicPath: '',
+    publicPath: '/bundle/',
     clean: true,
   },
   module: {
@@ -20,7 +20,16 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+            presets: [
+              '@babel/preset-env',
+              [
+                '@babel/preset-react',
+                {
+                  runtime: 'automatic',
+                },
+              ],
+              '@babel/preset-typescript',
+            ],
           },
         },
       },
