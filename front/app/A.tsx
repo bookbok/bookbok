@@ -1,5 +1,11 @@
-import { ReactElement } from 'react'
+import { ReactElement, useEffect, useState } from 'react';
 
 export default function A(): ReactElement {
-  return <div>A</div>
+  const [a] = useState<string>();
+  useEffect(() => {
+    if (a) {
+      console.debug(a);
+    }
+  }, []);
+  return <div>A</div>;
 }
