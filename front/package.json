@@ -2,7 +2,13 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --config webpack.prod.js",
-    "watch": "webpack --progress --watch --config webpack.dev.js"
+    "watch": "webpack --progress --watch --config webpack.dev.js",
+    "eslint:base": "eslint app",
+    "eslint:check": "yarn run eslint:base",
+    "eslint:fix": "yarn run eslint:base --fix",
+    "prettier:base": "prettier app",
+    "prettier:check": "yarn prettier:base --check",
+    "prettier:fix": "yarn prettier:base --write"
   },
   "dependencies": {
     "@babel/core": "^7.14.6",
