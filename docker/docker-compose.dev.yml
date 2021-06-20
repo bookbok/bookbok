@@ -33,6 +33,7 @@ services:
       - 8080:80
     volumes:
       - ..:/var/www/html
+      - ./var/nginx_log:/var/log/nginx
       - php-fpm-socket:/var/run/php-fpm
     depends_on:
       - app
