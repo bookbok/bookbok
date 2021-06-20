@@ -4,19 +4,19 @@ volumes:
   psysh-store:
 services:  
   db:
-    build: ./_dev/db
+    build: ./docker/_dev/db
     ports:
       - 13306:3306
     volumes:
-      - ./var/mysql_data:/var/lib/mysql
+      - ./docker/var/mysql_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=password
 
   app:
     tty: true
-    build: ./_dev/app
+    build: ./docker/_dev/app
     volumes:
-      - ..:/var/www/html
+      - .:/var/www/html
       - php-fpm-socket:/var/run/php-fpm
       - psysh-store:/root/.config/psysh
     environment:
@@ -28,12 +28,12 @@ services:
       - db
 
   nginx:
-    build: ./_dev/nginx
+    build: ./docker/_dev/nginx
     ports:
       - 8080:80
     volumes:
-      - ..:/var/www/html
-      - ./var/nginx_log:/var/log/nginx
+      - .:/var/www/html
+      - ./docker/var/nginx_log:/var/log/nginx
       - php-fpm-socket:/var/run/php-fpm
     depends_on:
       - app
