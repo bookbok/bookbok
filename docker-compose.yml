@@ -26,11 +26,11 @@ services:
           nocopy: true
     environment:
       - DB_CONNECTION=mysql
-      - DB_HOST=db
+      - DB_HOST=127.0.0.1
       - DB_PORT=3306
       - DB_DATABASE=${DB_NAME:-laravel}
       - DB_USERNAME=${DB_USER:-root}
-      - DB_PASSWORD=${DB_PASS:-mypass}
+      - DB_PASSWORD=${DB_PASS:-password}
     depends_on:
       - mysql
 
@@ -38,6 +38,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+    command: "yarn watch"
     ports:
       - 80:80
     volumes:
@@ -65,5 +66,5 @@ services:
     environment:
       - MYSQL_DATABASE=${DB_NAME:-laravel}
       - MYSQL_USER=${DB_USER:-root}
-      - MYSQL_PASSWORD=${DB_PASS:-mypass}
-      - MYSQL_ROOT_PASSWORD=${DB_PASS:-mypass}
+      - MYSQL_PASSWORD=${DB_PASS:-password}
+      - MYSQL_ROOT_PASSWORD=${DB_PASS:-password}

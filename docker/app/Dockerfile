@@ -28,3 +28,5 @@ COPY ./docker/app/php-fpm.d/zzz-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf
 COPY ./docker/app/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /app
+
+CMD ["php-fpm", "--allow-to-run-as-root"]
