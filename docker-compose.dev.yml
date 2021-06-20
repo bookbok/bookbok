@@ -1,0 +1,39 @@
+version: "3.9"
+volumes:
+  php-fpm-socket:
+  psysh-store:
+services:  
+  db:
+    build: ./docker/_dev/db
+    ports:
+      - 13306:3306
+    volumes:
+      - ./docker/var/mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+
+  app:
+    tty: true
+    build: ./docker/_dev/app
+    volumes:
+      - .:/var/www/html
+      - php-fpm-socket:/var/run/php-fpm
+      - psysh-store:/root/.config/psysh
+    environment:
+      - DB_HOST=db
+      - DB_PORT=13306
+      - DB_USERNAME=root
+      - DB_PASSWORD=password
+    depends_on:
+      - db
+
+  nginx:
+    build: ./docker/_dev/nginx
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+      - ./docker/var/nginx_log:/var/log/nginx
+      - php-fpm-socket:/var/run/php-fpm
+    depends_on:
+      - app
