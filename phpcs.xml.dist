@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="bookbok">
+    <arg name="extensions" value="php" />
+    <arg name="report" value="code"/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <file>./app</file>
+    <file>./tests</file>
+
+    <rule ref="PSR12">
+        <rule ref="Generic.Files.LineLength">
+            <properties>
+                <!-- 120文字より長い行に対して警告を発生させる -->
+                <property name="lineLimit" value="120"/>
+                <!-- 一行の長さがどれだけ長くてもエラーは発生させない -->
+                <property name="absoluteLineLimit" value="0"/>
+            </properties>
+        </rule>
+    </rule>
+    <!-- テストメソッドは日本語だったりキャメルケースじゃなかったりする -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+</ruleset>

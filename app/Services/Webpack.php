@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 class Webpack
@@ -9,20 +10,18 @@ class Webpack
      * manifest.jsonから取得したエントリーポイント名と実ファイル名のマップ
      * @phpstan-var array<string,string>|null
      */
-    private ?array $manifest;
+    private ?array $manifest = null;
 
-    public function __construct(
-        string $publicPath,
-        string $buildFileDirName,
-        string $manifestFilename
-    ) {
+    public function __construct(string $publicPath, string $buildFileDirName, string $manifestFilename)
+    {
         $this->manifestPath = implode(DIRECTORY_SEPARATOR, [$publicPath, $buildFileDirName, $manifestFilename]);
     }
 
     /**
      * manifest.jsonからファイル名のマップを読み込む。
      */
-    private function load(): void {
+    private function load(): void
+    {
         $manifest = file_get_contents($this->manifestPath);
         if ($manifest === false) {
             throw new \Exception('ビルドしていない');
@@ -37,7 +36,8 @@ class Webpack
      * @param string $name
      * @return string
      */
-    public function get(string $name): string {
+    public function get(string $name): string
+    {
         if ($this->manifest === null) {
             $this->load();
         }
