@@ -25,6 +25,10 @@ jobs:
       - name: Install Packages
         if: steps.cache-packages.outputs.cache-hit != 'true'
         run: composer install -n --prefer-dist
+      - name: Setup Laravel App
+        run: |
+          cp .env.example .env
+          php artisan key:generate
       - name: Run PHPUnit
         run: composer phpunit
 
