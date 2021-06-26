@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="bookbok/book-info-scraper">
+<ruleset name="bookbok">
     <arg name="extensions" value="php" />
     <arg name="report" value="code"/>
     <arg name="colors"/>
