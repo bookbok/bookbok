@@ -7,8 +7,8 @@
 .env
 .env.backup
 .phpunit.result.cache
-.phpstan.neon
-.phpcs.xml
+phpstan.neon
+phpcs.xml
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
