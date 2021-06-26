@@ -10,7 +10,7 @@ class Webpack
      * manifest.jsonから取得したエントリーポイント名と実ファイル名のマップ
      * @phpstan-var array<string,string>|null
      */
-    private ?array $manifest;
+    private ?array $manifest = null;
 
     public function __construct(string $publicPath, string $buildFileDirName, string $manifestFilename)
     {
