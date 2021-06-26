@@ -3,5 +3,6 @@ includes:
 parameters:
     paths:
         - app
+        - tests
     level: max
     checkMissingIterableValueType: false
