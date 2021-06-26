@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="bookbok/book-info-scraper">
+    <arg name="extensions" value="php" />
+    <arg name="report" value="code"/>
+    <arg name="colors"/>
+    <arg value="ps"/>
+
+    <file>./app</file>
+
+    <rule ref="PSR12">
+        <rule ref="Generic.Files.LineLength">
+            <properties>
+                <!-- 120文字より長い行に対して警告を発生させる -->
+                <property name="lineLimit" value="120"/>
+                <!-- 一行の長さがどれだけ長くてもエラーは発生させない -->
+                <property name="absoluteLineLimit" value="0"/>
+            </properties>
+        </rule>
+    </rule>
+</ruleset>
