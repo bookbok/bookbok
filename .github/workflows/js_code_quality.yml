@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Cache Packages
+        working-directory: ./front
         uses: actions/cache@v2
         id: cache-packages
         with:
@@ -41,6 +42,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Cache Packages
+        working-directory: ./front
         uses: actions/cache@v2
         id: cache-packages
         with:
