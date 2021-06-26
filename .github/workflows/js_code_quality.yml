@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: 16
       - name: Cache Packages
         working-directory: ./front
         uses: actions/cache@v2
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: 16
       - name: Cache Packages
         working-directory: ./front
         uses: actions/cache@v2
