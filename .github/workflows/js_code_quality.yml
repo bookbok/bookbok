@@ -7,7 +7,6 @@ on:
 
 jobs:
   eslint:
-    name: eslint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -15,7 +14,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: 14
       - name: Cache Packages
         working-directory: ./front
         uses: actions/cache@v2
@@ -31,8 +30,7 @@ jobs:
         working-directory: ./front
         run: yarn eslint:check
 
-  format:
-    name: Format
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -40,7 +38,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: 14
       - name: Cache Packages
         working-directory: ./front
         uses: actions/cache@v2
