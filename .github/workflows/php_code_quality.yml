@@ -1,0 +1,77 @@
+name: PHP Code Quality
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'front/**'
+
+jobs:
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      - name: Cache Packages
+        uses: actions/cache@v2
+        id: cache-packages
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Install Packages
+        if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+      - name: Setup Laravel App
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      - name: Run PHPUnit
+        run: composer phpunit
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      - name: Cache Packages
+        uses: actions/cache@v2
+        id: cache-packages
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Install Packages
+        if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+      - name: Run PHPStan
+        run: composer phpstan
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+      - name: Cache Packages
+        uses: actions/cache@v2
+        id: cache-packages
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Install Packages
+        if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: composer install -n --prefer-dist
+      - name: Check Format
+        run: composer phpcs
