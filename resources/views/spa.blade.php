@@ -5,7 +5,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>{{ $meta->title }}</title>
+        <meta name="description" content="{{ $meta->description }}">
+        <link rel=”canonical” href="{{ $meta->canonical }}"/>
+        <meta property="og:site_name" content="BookBok">
+        <meta property="og:type" content="{{ $meta->ogType }}">
+        <meta property="og:image" content="{{ $meta->ogImage }}">
+        <meta property="og:title" content="{{ $meta->ogTitle }}">
+        <meta property="og:description" content="{{ $meta->ogDescription }}">
 
         <script src="{{ $webpack->get('vendor.js') }}" defer></script>
         <script src="{{ $webpack->get('app.js') }}" defer></script>
