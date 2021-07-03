@@ -1,24 +1,36 @@
-import { lazy, StrictMode, Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import { State } from 'app/modules';
+import { uiReducer } from 'app/modules/ui';
+import { Page } from 'app/page';
+import { useIsProduction } from 'app/utils';
+import { StrictMode, useMemo } from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import { combineReducers, compose, createStore } from 'redux';
 
-// Dynamic Import の例（ページコンポーネントごとにこれをして分割する）
-const A = lazy(() => import('./A'));
-const B = lazy(() => import('./B'));
+function App() {
+  const isProduction = useIsProduction();
+  const store = useMemo(() => {
+    // TODO: API呼ばずとも初期値を取得する方法を定義する。（domにjsonを埋め込んでおくとか）
+    const initialState = {};
+    return createStore(
+      combineReducers<State>({
+        ui: uiReducer,
+      }),
+      initialState,
+      (isProduction || !(window as KNOW).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        ? compose
+        : (window as KNOW).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)()
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-const App = () => (
-  <div>
-    <Suspense fallback={<div>待ってね</div>}>
-      <div>
-        <A />
-        <B />
-      </div>
-    </Suspense>
-  </div>
-);
+  return (
+    <StrictMode>
+      <Provider store={store}>
+        <Page />
+      </Provider>
+    </StrictMode>
+  );
+}
 
-ReactDOM.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById('app')
-);
+render(<App />, document.getElementById('app'));
