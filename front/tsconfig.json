@@ -12,7 +12,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "./",
-    "typeRoots": ["types", "node_modules/@types"],
+    "typeRoots": ["app/types", "node_modules/@types"],
   },
   "include": ["app"]
 }
