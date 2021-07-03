@@ -4,13 +4,15 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Lib\HtmlMeta;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
+/**
+ * TODO: canonicalのリバースルーター対応（パラメータの順番等に気を付けないとクローラ等で不利）
+ */
 class SpaController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-     */
-    public function top()
+    public function top(): View|Factory
     {
         return $this->spa(new HtmlMeta(
             'https://www.bookbok.net/',
@@ -18,10 +20,7 @@ class SpaController extends Controller
         ));
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-     */
-    public function about()
+    public function about(): View|Factory
     {
         return $this->spa(new HtmlMeta(
             'https://www.bookbok.net/about',
@@ -30,12 +29,7 @@ class SpaController extends Controller
         ));
     }
 
-    /**
-     * TODO: canonicalのリバースルーター対応（パラメータの順番等に気を付けないとクローラ等で不利）
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
-     */
-    private function spa(HtmlMeta $meta)
+    private function spa(HtmlMeta $meta): View|Factory
     {
         return view('spa', ['meta' => $meta]);
     }
