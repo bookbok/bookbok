@@ -6,13 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{{ $meta->title }}</title>
-        <meta name="description" content="{{ $meta->description }}">
-        <link rel=”canonical” href="{{ $meta->canonical }}"/>
-        <meta property="og:site_name" content="BookBok">
-        <meta property="og:type" content="{{ $meta->ogType }}">
-        <meta property="og:image" content="{{ $meta->ogImage }}">
-        <meta property="og:title" content="{{ $meta->ogTitle }}">
-        <meta property="og:description" content="{{ $meta->ogDescription }}">
+        <link rel="canonical" href="{{ $meta->canonical }}" data-react-helmet />
+        <meta name="description" content="{{ $meta->description }}" data-react-helmet>
+        <meta property="og:site_name" content="BookBok" data-react-helmet>
+        <meta property="og:type" content="{{ $meta->ogType }}" data-react-helmet>
+        <meta property="og:image" content="{{ $meta->ogImage }}" data-react-helmet>
+        <meta property="og:title" content="{{ $meta->ogTitle }}" data-react-helmet>
+        <meta property="og:description" content="{{ $meta->ogDescription }}" data-react-helmet>
 
         <script src="{{ $webpack->get('vendor.js') }}" defer></script>
         <script src="{{ $webpack->get('app.js') }}" defer></script>

@@ -2,22 +2,54 @@ import { PageRouter } from 'app/pages';
 import { useTheme } from 'app/theme';
 import { createBrowserHistory } from 'history';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
+import Helmet from 'react-helmet';
 
 export function Page() {
   const history = useMemo(createBrowserHistory, []);
   const theme = useTheme(false);
+  const pageMeta = useSelector(state => state.ui.pageMeta);
+  const [title, link, meta] = useMemo<
+    [
+      string | undefined,
+      JSX.IntrinsicElements['link'][] | undefined,
+      JSX.IntrinsicElements['meta'][] | undefined
+    ]
+  >(() => {
+    if (pageMeta === undefined) {
+      return [undefined, undefined, undefined];
+    }
+    if (pageMeta === null) {
+      return ['読み込み中', undefined, undefined];
+    }
+    return [
+      pageMeta.title,
+      [{ rel: 'canonical', href: pageMeta.canonical }],
+      [
+        { name: 'description', content: pageMeta.description },
+        { property: 'og:title', content: pageMeta.ogTitle },
+        { property: 'og:type', content: pageMeta.ogType },
+        { property: 'og:image', content: pageMeta.ogImage },
+        { property: 'og:description', content: pageMeta.ogDescription },
+      ],
+    ];
+  }, [pageMeta]);
+
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Router history={history}>
-        {/* TODO: ヘッダーやフッターなどのメインのレイアウトをここに書く */}
-        あいうえお
-        <PageRouter />
-      </Router>
-    </ThemeProvider>
+    <>
+      <Helmet title={title} link={link} meta={meta} />
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Router history={history}>
+          {/* TODO: ヘッダーやフッターなどのメインのレイアウトをここに書く */}
+          あいうえお
+          <PageRouter />
+        </Router>
+      </ThemeProvider>
+    </>
   );
 }
 
