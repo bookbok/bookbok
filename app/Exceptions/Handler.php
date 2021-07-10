@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Http\ViewModel\HtmlMeta;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -34,6 +38,24 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        // TODO: 多分、カスタム例外に置き換えてrenderメソッドを例外ごとに定義する方法のほうがきれいになる。
+        $this->renderable(function (NotFoundHttpException $e, Request $request): Response {
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'not found'], 404);
+            }
+            return response()->view(
+                'spa',
+                [
+                    'meta' => new HtmlMeta(
+                        'https://www.bookbok.net/',
+                        'Not Found | BookBok',
+                        'ページがないよ。'
+                    ),
+                    'httpStatus' => 404,
+                ],
+                404
+            );
+        });
         $this->reportable(function (Throwable $e) {
             //
         });
