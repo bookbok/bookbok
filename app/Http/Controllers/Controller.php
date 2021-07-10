@@ -17,7 +17,7 @@ abstract class Controller extends BaseController
     /**
      * @phpstan-return never
      */
-    protected function notFound(): void
+    protected function throwNotFound(): void
     {
         throw new NotFoundHttpException();
     }

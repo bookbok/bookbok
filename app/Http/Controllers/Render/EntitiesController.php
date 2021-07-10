@@ -25,7 +25,7 @@ class EntitiesController extends AbstractController
     public function show(int $id): Response
     {
         if ($id !== 1) {
-            $this->notFound();
+            $this->throwNotFound();
         }
 
         return $this->spa(new HtmlMeta(
