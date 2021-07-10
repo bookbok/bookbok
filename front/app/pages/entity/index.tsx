@@ -1,11 +1,10 @@
 import { setMeta } from 'app/modules/ui';
-import { TopPageProps } from 'app/pages/types';
+import { EntityPageProps } from 'app/pages/types';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-// eslint-disable-next-line no-empty-pattern
-export default function Top({}: TopPageProps) {
+export default function Entity({ id }: EntityPageProps) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -15,17 +14,19 @@ export default function Top({}: TopPageProps) {
         description: 'デフォルトの説明文',
       })
     );
-  }, [dispatch]);
+
+    // TODO: ここでAPIリクエスト
+  }, [dispatch, id]);
   return (
     <ul>
+      <li>
+        <Link to={'/'}>top</Link>
+      </li>
       <li>
         <Link to={'/about'}>about</Link>
       </li>
       <li>
         <Link to={'/entities'}>entities</Link>
-      </li>
-      <li>
-        <Link to={'/entities/1'}>entity</Link>
       </li>
     </ul>
   );

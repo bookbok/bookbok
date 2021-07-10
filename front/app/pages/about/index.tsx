@@ -17,8 +17,16 @@ export default function About({}: AboutPageProps) {
     );
   }, [dispatch]);
   return (
-    <div>
-      <Link to={'/'}>top</Link>
-    </div>
+    <ul>
+      <li>
+        <Link to={'/'}>top</Link>
+      </li>
+      <li>
+        <Link to={'/entities'}>entities</Link>
+      </li>
+      <li>
+        <Link to={'/entities/1'}>entity</Link>
+      </li>
+    </ul>
   );
 }
