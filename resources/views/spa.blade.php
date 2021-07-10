@@ -18,7 +18,7 @@
         <script src="{{ $webpack->get('app.js') }}" defer></script>
     </head>
     <body>
-        <div id="app">
+        <div id="app" @if(isset($httpStatus)) data-state="{{$httpStatus}}" @endif>
             <!-- TODO: noscriptな時や読み込みが遅いときの時のためのコンテンツをここに入れておく -->
         </div>
     </body>
