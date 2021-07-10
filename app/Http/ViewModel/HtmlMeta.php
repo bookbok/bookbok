@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib;
+namespace App\Http\ViewModel;
 
 class HtmlMeta
 {
