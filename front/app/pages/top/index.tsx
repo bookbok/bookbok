@@ -1,5 +1,5 @@
 import { setMeta } from 'app/modules/ui';
-import { TopPageProps } from 'app/pages/types';
+import { reverseRoute, TopPageProps } from 'app/pages/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -19,13 +19,13 @@ export default function Top({}: TopPageProps) {
   return (
     <ul>
       <li>
-        <Link to={'/about'}>about</Link>
+        <Link to={reverseRoute('about')}>about</Link>
       </li>
       <li>
-        <Link to={'/entities'}>entities</Link>
+        <Link to={reverseRoute('entities')}>entities</Link>
       </li>
       <li>
-        <Link to={'/entities/1'}>entity</Link>
+        <Link to={reverseRoute({ pageType: 'entity', id: 1 })}>entity</Link>
       </li>
     </ul>
   );

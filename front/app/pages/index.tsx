@@ -1,82 +1,88 @@
-import { lazy, Suspense, useMemo } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
-import {
-  PageTypes,
-  TopPageProps,
-  AboutPageProps,
-  EntitiesPageProps,
-  EntityPageProps,
-} from './types';
+import PageRouter from 'app/pages/PageRouter';
+import { useTheme } from 'app/theme';
+import { createBrowserHistory } from 'history';
+import { useMemo } from 'react';
+import Helmet from 'react-helmet';
+import { useSelector } from 'react-redux';
+import { Router } from 'react-router-dom';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import reset from 'styled-reset';
 
-const About = lazy(() => import('./about'));
-const Entities = lazy(() => import('./entities'));
-const Entity = lazy(() => import('./entity'));
-const Top = lazy(() => import('./top'));
-
-export function PageRouter() {
-  const path = useLocation().pathname;
-  const pageProps = useMemo(() => calcPageProps(path), [path]);
+export default function Pages() {
+  const history = useMemo(createBrowserHistory, []);
+  const theme = useTheme(false);
+  const pageMeta = useSelector(state => state.ui.pageMeta);
+  const [title, link, meta] = useMemo<
+    [
+      string | undefined,
+      JSX.IntrinsicElements['link'][] | undefined,
+      JSX.IntrinsicElements['meta'][] | undefined
+    ]
+  >(() => {
+    if (pageMeta === undefined) {
+      return [undefined, undefined, undefined];
+    }
+    if (pageMeta === null) {
+      return ['読み込み中', undefined, undefined];
+    }
+    return [
+      pageMeta.title,
+      [{ rel: 'canonical', href: pageMeta.canonical }],
+      [
+        { name: 'description', content: pageMeta.description },
+        { property: 'og:title', content: pageMeta.ogTitle },
+        { property: 'og:type', content: pageMeta.ogType },
+        { property: 'og:image', content: pageMeta.ogImage },
+        { property: 'og:description', content: pageMeta.ogDescription },
+      ],
+    ];
+  }, [pageMeta]);
 
   return (
-    <Suspense fallback={<div>読み込み中</div>}>
-      {pageProps?.pageType === PageTypes.About ? (
-        <About {...pageProps} />
-      ) : pageProps?.pageType === PageTypes.Entities ? (
-        <Entities {...pageProps} />
-      ) : pageProps?.pageType === PageTypes.Entity ? (
-        <Entity {...pageProps} />
-      ) : pageProps?.pageType === PageTypes.Top ? (
-        <Top {...pageProps} />
-      ) : (
-        (() => {
-          throw new Error('TODO: ここに到達することはないと思う');
-        })()
-      )}
-    </Suspense>
+    <>
+      <Helmet title={title} link={link} meta={meta} />
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Router history={history}>
+          {/* TODO: ヘッダーやフッターなどのメインのレイアウトをここに書く */}
+          あいうえお
+          <PageRouter />
+        </Router>
+      </ThemeProvider>
+    </>
   );
 }
 
-function calcPageProps(
-  path: string
-): AboutPageProps | EntitiesPageProps | EntityPageProps | TopPageProps | undefined {
-  {
-    const match = matchPath(path, {
-      path: '/about',
-      exact: true,
-    });
-    if (match !== null) {
-      return { pageType: PageTypes.About };
-    }
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+
+  * {
+    box-sizing: border-box;
   }
-  {
-    const match = matchPath<{ id: string }>(path, {
-      path: '/entities/:id([1-9][0-9]*)',
-      exact: true,
-    });
-    if (match !== null) {
-      return {
-        pageType: PageTypes.Entity,
-        id: parseInt(match.params.id, 10),
-      };
-    }
+
+  html, body, #app {
+    margin: 0;
+    padding: 0;
+    width: 100%;
   }
-  {
-    const match = matchPath(path, {
-      path: '/entities',
-      exact: true,
-    });
-    if (match !== null) {
-      return { pageType: PageTypes.Entities };
-    }
+
+  html {
+    font-size: clamp(8px, 62.5%, 14px);
+    font-family: sans-serif;
   }
-  {
-    const match = matchPath(path, {
-      path: '/',
-      exact: true,
-    });
-    if (match !== null) {
-      return { pageType: PageTypes.Top };
-    }
+
+  body {
+    min-width: 340px;
+    background-color: ${({ theme }) => theme.color.background.base};
+    color: ${({ theme }) => theme.color.text.primary};
   }
-  return undefined;
-}
+
+  a {
+    color: ${({ theme }) => theme.color.text.link};
+  }
+
+  #app {
+    z-index: 0;
+    position: relative;
+  }
+`;

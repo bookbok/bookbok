@@ -1,6 +1,6 @@
 import { State } from 'app/modules';
 import { uiReducer } from 'app/modules/ui';
-import { Page } from 'app/page';
+import Pages from 'app/pages';
 import { useIsProduction } from 'app/utils';
 import { StrictMode, useMemo } from 'react';
 import { render } from 'react-dom';
@@ -27,7 +27,7 @@ function App() {
   return (
     <StrictMode>
       <Provider store={store}>
-        <Page />
+        <Pages />
       </Provider>
     </StrictMode>
   );
