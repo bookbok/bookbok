@@ -50,17 +50,8 @@ function match<T>(pathname: string, path: string) {
   return matchPath<T>(pathname, { path, exact: true });
 }
 
-export function makePath(props: PageProps | Exclude<PageType, 'entity'>): string {
-  if (typeof props === 'string') {
-    return props === 'top'
-      ? '/'
-      : props === 'about'
-      ? '/about'
-      : props === 'entities'
-      ? '/entities'
-      : unreachable(props);
-  }
-
+export function makePath(_props: PageProps | Exclude<PageType, 'entity'>): string {
+  const props: PageProps = typeof _props === 'string' ? { pageType: _props } : _props;
   return props.pageType === 'top'
     ? '/'
     : props.pageType === 'about'
