@@ -1,27 +1,45 @@
 import { unreachable } from 'app/utils';
+import { lazy } from 'react';
 import { matchPath } from 'react-router-dom';
 
-const pageTypes = ['top', 'about', 'entities', 'entity'] as const;
-export type PageType = typeof pageTypes[number];
+/**
+ * TODO:特定の条件（例: ログイン済み）のときのみ一致するルートの表現
+ */
+export const routingMap = {
+  top: {
+    match: (path: string) =>
+      match(path, '/') !== null ? ({ pageType: 'top' } as const) : undefined,
+    component: lazy(() => import('./top')),
+  },
+  about: {
+    match: (path: string) =>
+      match(path, '/about') !== null ? ({ pageType: 'about' } as const) : undefined,
+    component: lazy(() => import('./about')),
+  },
+  entities: {
+    match: (path: string) =>
+      match(path, '/entities') !== null ? ({ pageType: 'entities' } as const) : undefined,
+    component: lazy(() => import('./entities')),
+  },
+  entity: {
+    match: (path: string) => {
+      const m = match<{ id: string }>(path, '/entities/:id([1-9][0-9]*)');
+      if (m !== null) {
+        return {
+          pageType: 'entity',
+          id: parseInt(m.params.id, 10),
+        } as const;
+      }
+      return undefined;
+    },
+    component: lazy(() => import('./entity')),
+  },
+};
 
-export interface AboutPageProps {
-  pageType: 'about';
-}
-
-export interface EntitiesPageProps {
-  pageType: 'entities';
-}
-
-export interface EntityPageProps {
-  pageType: 'entity';
-  id: number;
-}
-
-export interface TopPageProps {
-  pageType: 'top';
-}
-
-export type PageProps = TopPageProps | AboutPageProps | EntitiesPageProps | EntityPageProps;
+export type PageType = keyof typeof routingMap;
+export type PageProp = NonNullable<
+  typeof routingMap extends { [type: string]: { match(path: string): infer U } } ? U : never
+>;
 
 /**
  * matchPathのラッパー。exactは基本的につけるので毎回書かなくてもいいように
@@ -30,43 +48,7 @@ function match<T>(pathname: string, path: string) {
   return matchPath<T>(pathname, { path, exact: true });
 }
 
-/**
- * pathから表示するページのデータ（表示するページやクエリパラメータ、urlパラメータなど）を算出して返す。
- */
-export function calcPageProps(path: string): PageProps | undefined {
-  // router
-  //   .match('/', { pageType: 'top' })
-  //   .match('/about', { pageType: 'about' })
-  // みたいな感じできれいに定義できるようにしたい
-  // いい感じにするライブラリがなければ自分で作る
-  {
-    if (match(path, '/') !== null) {
-      return { pageType: 'top' };
-    }
-  }
-  {
-    if (match(path, '/about') !== null) {
-      return { pageType: 'about' };
-    }
-  }
-  {
-    if (match(path, '/entities') !== null) {
-      return { pageType: 'entities' };
-    }
-  }
-  {
-    const m = match<{ id: string }>(path, '/entities/:id([1-9][0-9]*)');
-    if (m !== null) {
-      return {
-        pageType: 'entity',
-        id: parseInt(m.params.id, 10),
-      };
-    }
-  }
-  return undefined;
-}
-
-export function reverseRoute(props: PageProps | Exclude<PageType, 'entity'>): string {
+export function reverseRoute(props: PageProp | Exclude<PageType, 'entity'>): string {
   if (typeof props === 'string') {
     return props === 'top'
       ? '/'
