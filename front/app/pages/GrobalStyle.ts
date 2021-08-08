@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size: clamp(8px, 62.5%, 14px);
     font-family: sans-serif;
   }
 
