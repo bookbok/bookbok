@@ -1,11 +1,11 @@
 import { Suspense, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { routingMap } from './router';
+import { routeConfig } from './router';
 
 export default function PageRouter() {
   const path = useLocation().pathname;
   const [props, Component] = useMemo(() => {
-    for (const [, data] of Object.entries(routingMap)) {
+    for (const [, data] of Object.entries(routeConfig)) {
       const props = data.match(path);
       if (props !== undefined) {
         return [props, data.component];

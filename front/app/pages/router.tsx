@@ -7,7 +7,7 @@ import { matchPath } from 'react-router-dom';
  *
  * - componentのimportの結果は必ずanyにする。さもないと各コンポーネントでPageProps等の型を使った時に循環参照になる
  */
-export const routingMap = {
+export const routeConfig = {
   top: {
     match: (path: string) =>
       match(path, '/') !== null ? ({ pageType: 'top' } as const) : undefined,
@@ -38,9 +38,9 @@ export const routingMap = {
   },
 } as const;
 
-export type PageType = keyof typeof routingMap;
+export type PageType = keyof typeof routeConfig;
 export type PageProps<Type extends PageType = PageType> = NonNullable<
-  ReturnType<typeof routingMap[Type]['match']>
+  ReturnType<typeof routeConfig[Type]['match']>
 >;
 
 /**
@@ -50,7 +50,7 @@ function match<T>(pathname: string, path: string) {
   return matchPath<T>(pathname, { path, exact: true });
 }
 
-export function reverseRoute(props: PageProps | Exclude<PageType, 'entity'>): string {
+export function makePath(props: PageProps | Exclude<PageType, 'entity'>): string {
   if (typeof props === 'string') {
     return props === 'top'
       ? '/'

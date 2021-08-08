@@ -1,5 +1,5 @@
 import { setMeta } from 'app/modules/ui';
-import { PageProps, reverseRoute } from 'app/pages/router';
+import { makePath, PageProps } from 'app/pages/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -20,13 +20,13 @@ export default function Entity({ id }: PageProps<'entity'>) {
   return (
     <ul>
       <li>
-        <Link to={reverseRoute('top')}>top</Link>
+        <Link to={makePath('top')}>top</Link>
       </li>
       <li>
-        <Link to={reverseRoute('about')}>about</Link>
+        <Link to={makePath('about')}>about</Link>
       </li>
       <li>
-        <Link to={reverseRoute('entities')}>entities</Link>
+        <Link to={makePath('entities')}>entities</Link>
       </li>
     </ul>
   );
