@@ -4,22 +4,24 @@ import { matchPath } from 'react-router-dom';
 
 /**
  * TODO:特定の条件（例: ログイン済み）のときのみ一致するルートの表現
+ *
+ * - componentのimportの結果は必ずanyにする。さもないと各コンポーネントでPageProps等の型を使った時に循環参照になる
  */
 export const routingMap = {
   top: {
     match: (path: string) =>
       match(path, '/') !== null ? ({ pageType: 'top' } as const) : undefined,
-    component: lazy(() => import('./top')),
+    component: lazy(() => import('./top') as KNOW),
   },
   about: {
     match: (path: string) =>
       match(path, '/about') !== null ? ({ pageType: 'about' } as const) : undefined,
-    component: lazy(() => import('./about')),
+    component: lazy(() => import('./about') as KNOW),
   },
   entities: {
     match: (path: string) =>
       match(path, '/entities') !== null ? ({ pageType: 'entities' } as const) : undefined,
-    component: lazy(() => import('./entities')),
+    component: lazy(() => import('./entities') as KNOW),
   },
   entity: {
     match: (path: string) => {
@@ -32,13 +34,13 @@ export const routingMap = {
       }
       return undefined;
     },
-    component: lazy(() => import('./entity')),
+    component: lazy(() => import('./entity') as KNOW),
   },
-};
+} as const;
 
 export type PageType = keyof typeof routingMap;
-export type PageProp = NonNullable<
-  typeof routingMap extends { [type: string]: { match(path: string): infer U } } ? U : never
+export type PageProps<Type extends PageType = PageType> = NonNullable<
+  ReturnType<typeof routingMap[Type]['match']>
 >;
 
 /**
@@ -48,7 +50,7 @@ function match<T>(pathname: string, path: string) {
   return matchPath<T>(pathname, { path, exact: true });
 }
 
-export function reverseRoute(props: PageProp | Exclude<PageType, 'entity'>): string {
+export function reverseRoute(props: PageProps | Exclude<PageType, 'entity'>): string {
   if (typeof props === 'string') {
     return props === 'top'
       ? '/'

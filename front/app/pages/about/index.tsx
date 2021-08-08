@@ -1,11 +1,11 @@
 import { setMeta } from 'app/modules/ui';
-import { AboutPageProps, reverseRoute } from 'app/pages/router';
+import { PageProps, reverseRoute } from 'app/pages/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line no-empty-pattern
-export default function About({}: AboutPageProps) {
+export default function About({}: PageProps<'about'>) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(

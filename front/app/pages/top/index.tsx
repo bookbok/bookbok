@@ -1,11 +1,11 @@
 import { setMeta } from 'app/modules/ui';
-import { reverseRoute, TopPageProps } from 'app/pages/router';
+import { reverseRoute, PageProps } from 'app/pages/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line no-empty-pattern
-export default function Top({}: TopPageProps) {
+export default function Top({}: PageProps<'top'>) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(

@@ -1,10 +1,10 @@
 import { setMeta } from 'app/modules/ui';
-import { EntityPageProps, reverseRoute } from 'app/pages/router';
+import { PageProps, reverseRoute } from 'app/pages/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-export default function Entity({ id }: EntityPageProps) {
+export default function Entity({ id }: PageProps<'entity'>) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
