@@ -1,16 +1,14 @@
 import PageRouter from 'app/pages/PageRouter';
-import { useTheme } from 'app/theme';
 import { createBrowserHistory } from 'history';
 import { useMemo } from 'react';
 import Helmet from 'react-helmet';
 import { useSelector } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import reset from 'styled-reset';
+import GlobalStyle from './GrobalStyle';
+import ThemeProvider from './ThemeProvider';
 
 export default function Pages() {
   const history = useMemo(createBrowserHistory, []);
-  const theme = useTheme(false);
   const pageMeta = useSelector(state => state.ui.pageMeta);
   const [title, link, meta] = useMemo<
     [
@@ -41,7 +39,7 @@ export default function Pages() {
   return (
     <>
       <Helmet title={title} link={link} meta={meta} />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider>
         <GlobalStyle />
         <Router history={history}>
           {/* TODO: ヘッダーやフッターなどのメインのレイアウトをここに書く */}
@@ -52,37 +50,3 @@ export default function Pages() {
     </>
   );
 }
-
-const GlobalStyle = createGlobalStyle`
-  ${reset}
-
-  * {
-    box-sizing: border-box;
-  }
-
-  html, body, #app {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-
-  html {
-    font-size: clamp(8px, 62.5%, 14px);
-    font-family: sans-serif;
-  }
-
-  body {
-    min-width: 340px;
-    background-color: ${({ theme }) => theme.color.background.base};
-    color: ${({ theme }) => theme.color.text.primary};
-  }
-
-  a {
-    color: ${({ theme }) => theme.color.text.link};
-  }
-
-  #app {
-    z-index: 0;
-    position: relative;
-  }
-`;
