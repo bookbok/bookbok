@@ -1,5 +1,5 @@
-const path = require('path')
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
+const path = require('path');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
   entry: {
@@ -55,4 +55,4 @@ module.exports = {
       },
     },
   },
-}
+};
