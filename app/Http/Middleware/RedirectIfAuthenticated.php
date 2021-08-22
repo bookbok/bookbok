@@ -19,6 +19,7 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
+        // @phpstan-ignore-next-line use empty
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

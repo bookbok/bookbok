@@ -13,6 +13,7 @@ class ExampleTest extends TestCase
      */
     public function test_example()
     {
-        $this->assertTrue(true);
+        // @phpstan-ignore-next-line always evaluate to true.
+        static::assertTrue(true);
     }
 }

@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Webpack::class, function (Application $app) {
+        $this->app->singleton(Webpack::class, function (Application $app): Webpack {
             return new Webpack($app->publicPath(), 'bundle', 'manifest.json');
         });
     }
