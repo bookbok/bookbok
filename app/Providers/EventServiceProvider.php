@@ -33,6 +33,8 @@ class EventServiceProvider extends ServiceProvider
             // PDOの取得モードを ASSOC（連想配列）に変える。
             // デフォルトではオブジェクトだけど、匿名オブジェクトだと型を付けられない。
             $e->statement->setFetchMode(PDO::FETCH_ASSOC);
+            // PDO側でエミュレーションしてしまうと、パフォーマンスはよくなるが型情報が消えてしまう。
+            $e->statement->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         });
     }
 }
