@@ -14,6 +14,13 @@ interface EntityInterface
     public static function fromRecord(array $record): self;
 
     /**
+     * @phpstan-ignore-next-line type T is not subtype of native type array.
+     * @phpstan-param T[] $records
+     * @phpstan-return self[]
+     */
+    public static function fromRecords(array $records): array;
+
+    /**
      * @phpstan-ignore-next-line type mixed is not subtype of native type array.
      * @phpstan-return T
      */
