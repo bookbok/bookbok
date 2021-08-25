@@ -42,7 +42,10 @@ class Connection
     {
         assert(str_starts_with(trim($query), 'SELECT'));
 
-        return $this->connection->select($query, $bindings, !$forceUseWritePdo);
+        return $this->connection->select(
+            ...SQL::transform($query, $bindings),
+            !$forceUseWritePdo
+        );
     }
 
     /**
@@ -56,7 +59,10 @@ class Connection
             throw new LogicException('for update はトランザクション中じゃないと呼べない');
         }
 
-        return $this->connection->select($query . ' FOR UPDATE', $bindings, false);
+        return $this->connection->select(
+            ...SQL::transform($query . ' FOR UPDATE', $bindings),
+            false
+        );
     }
 
     /**
@@ -66,7 +72,7 @@ class Connection
     {
         assert(str_starts_with(trim($query), 'INSERT'));
 
-        return $this->connection->insert($query, $bindings);
+        return $this->connection->insert(...SQL::transform($query, $bindings));
     }
 
 
@@ -77,7 +83,7 @@ class Connection
     {
         assert(str_starts_with(trim($query), 'UPDATE'));
 
-        return $this->connection->update($query, $bindings);
+        return $this->connection->update(...SQL::transform($query, $bindings));
     }
 
     /**
@@ -87,6 +93,6 @@ class Connection
     {
         assert(str_starts_with(trim($query), 'DELETE'));
 
-        return $this->connection->delete($query, $bindings);
+        return $this->connection->delete(...SQL::transform($query, $bindings));
     }
 }
