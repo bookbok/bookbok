@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Database\Events\StatementPrepared;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use PDO;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,12 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Event::listen(function (StatementPrepared $e): void {
+            // PDOの取得モードを ASSOC（連想配列）に変える。
+            // デフォルトではオブジェクトだけど、匿名オブジェクトだと型を付けられない。
+            $e->statement->setFetchMode(PDO::FETCH_ASSOC);
+            // PDO側でエミュレーションしてしまうと、パフォーマンスはよくなるが型情報が消えてしまう。
+            $e->statement->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        });
     }
 }
