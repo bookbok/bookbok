@@ -11,3 +11,4 @@ parameters:
     checkMissingIterableValueType: false
     typeAliases:
         non-negative-int: "int<0, max>"
+        record-sample: "array{id: positive-int, title: string, position: non-negative-int, created_at: string, updated_at: string}"
