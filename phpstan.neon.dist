@@ -9,3 +9,5 @@ parameters:
         - tests
     level: max
     checkMissingIterableValueType: false
+    typeAliases:
+        non-negative-int: "int<0, max>"

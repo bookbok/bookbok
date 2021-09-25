@@ -17,6 +17,8 @@
                 <property name="absoluteLineLimit" value="0"/>
             </properties>
         </rule>
+        <!-- コンストラクタのプロモーション使用時に、一つ目のプロパティにphpdocで情報を付与しようとすると発生する。 -->
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.FirstParamSpacing" />
     </rule>
     <!-- テストメソッドは日本語だったりキャメルケースじゃなかったりする -->
     <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
